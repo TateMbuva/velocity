@@ -15,5 +15,11 @@
     "mongodb"
   ],
   "author": "@tatembuva",
-  "license": "GPL-3.0"
+  "license": "GPL-3.0",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongoose": "^5.3.9",
+    "nodemon": "^1.18.5"
+  }
 }
