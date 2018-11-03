@@ -1,0 +1,19 @@
+{
+  "name": "velocity-api",
+  "version": "1.0.0",
+  "description": "Health awareness, tracking and positive behaviour reward system",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node",
+    "js",
+    "paynow",
+    "twilio",
+    "express",
+    "mongodb"
+  ],
+  "author": "@tatembuva",
+  "license": "GPL-3.0"
+}
