@@ -9,6 +9,8 @@ const schema = new Schema({
     gender: { type: String, required: true },
     mobileNumber: { type: String, required: true },
     company: { type: String, default: "No company provided" },
+    userType: { type: String, default: "memberPaid" },
+    emailVerified: { type: Boolean, default: false },
     createdDate: { type: Date, default: Date.now }
 });
 

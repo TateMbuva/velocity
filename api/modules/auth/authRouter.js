@@ -54,7 +54,6 @@ router.post('/register', (req, res, next)=> {
 
 	authService.create(newUser)
         .then(() => {
-            //process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
             // Mailer Setup
             //Transport/Source
             const transporter = nodemailer.createTransport({
@@ -77,14 +76,14 @@ router.post('/register', (req, res, next)=> {
                 html: emailTemplate(p),
                 replyTo: `${config.transportEmail}`
               }
-            console.log(mailOptions)
+            //console.log(mailOptions)
             //Send mail
             transporter.sendMail(mailOptions, function(err, r) {
                 if (err) {
                   console.log('✉️  Nodemailer Error : ', err);
-                  res.json({ message: "User registered but Password Reset Email NOT Sent"})
+                  res.json({ message: "User registered but password reset email NOT sent"})
                 } else {
-                  res.json({ message: "User registered and Password Reset Email Sent"}) 
+                  res.json({ message: "User registered and password reset email sent"}) 
                   console.log('✉️  Nodemailer Response: ', r)
                 }
               })  

@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const db = require('../../config/mongoose');
 const User = db.User;
+const UserProfile = db.UserProfile;
 
 module.exports = {
     authenticate,
@@ -45,9 +46,36 @@ async function create(userParam) {
     if (userParam.password) {
         user.hash = bcrypt.hashSync(userParam.password, 10);
     }
-
+   
     // save user
-    await user.save();
+    // create a userprofile for user
+    await User.create(user, async (err, createdUser)=>{
+        console.log('New User created : ')
+        console.log(createdUser.id)
+        //Create a UserProfile for user
+        await createUserProfile(createdUser.id)
+
+        if(err){
+            console.log(`Error at creation : ${err}`)
+        }
+
+    })
+}
+//Create a UserProfile for user
+//userId
+function createUserProfile(userId) {
+    return new Promise(async function(resolve, reject) {
+        await UserProfile.create({userId: userId}, (err, createdProfile)=>{
+            if(err){
+                reject(err)
+            }else{
+                console.log(createdProfile)
+                resolve()
+            }
+
+        })
+    })
+    
 }
 
 async function update(id, userParam) {

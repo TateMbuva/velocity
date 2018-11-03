@@ -17,5 +17,6 @@ mongoose.Promise = global.Promise;
 
 //Export all models
 module.exports = {
-    User: require('../models/user.js')
+    User: require('../models/user.js'),
+    UserProfile: require('../models/userProfile.js')
 };
