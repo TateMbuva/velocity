@@ -11,6 +11,7 @@ module.exports = {
     getById,
     create,
     update,
+    createPartner,
     delete: _delete
 };
 
@@ -96,6 +97,34 @@ async function update(id, userParam) {
     Object.assign(user, userParam);
 
     await user.save();
+}
+
+//Register a new partner
+async function createPartner(userParam){
+
+    // validate
+    if (await User.findOne({ email: userParam.email })) {
+        throw 'Email "' + userParam.email + '" is already taken';
+    }
+
+    const user = new User(userParam);
+
+    // hash password
+    if (userParam.password) {
+        user.hash = bcrypt.hashSync(userParam.password, 10);
+    }
+
+    //save partner
+    await User.create(user, (err, createdUser)=>{
+        console.log('New User (Partner) created : ')
+        console.log(createdUser)
+
+        if(err){
+            console.log(`Error at creation : ${err}`)
+        }
+
+    })
+
 }
 
 async function _delete(id) {

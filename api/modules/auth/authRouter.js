@@ -44,6 +44,7 @@ router.post('/register', (req, res, next)=> {
         gender: req.body.gender,
         mobileNumber: req.body.mobileNumber,
         company: req.body.company,
+        userType: req.body.userType,
         password: p
     }
 
@@ -127,6 +128,78 @@ router.put('/:id', (req, res, next)=> {
         .catch(err => next(err));
 
 })
+
+//Create a new partner
+router.post('/registerPartner', (req, res, next)=> {
+    let p = "no password"
+    //Generate unique password if none Exists
+    if(!req.body.password){
+        p = passwordGen.generate({
+        length: 10,
+        numbers: true
+        })
+    }else {
+        p = req.body.password
+    }
+    //New user object
+    let newUser = {
+        email: req.body.email,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        mobileNumber: req.body.mobileNumber,
+        company: req.body.company,
+        userType: "partner",
+        password: p
+    }
+
+    
+
+    console.log(newUser)
+    
+
+    authService.createPartner(newUser)
+        .then(() => {
+            // Mailer Setup
+            //Transport/Source
+            const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                  user: config.transportEmail,
+                  pass: config.emailPassword
+                },
+                tls: {
+                    // do not fail on invalid certs
+                    rejectUnauthorized: false
+                }
+              })
+            //Mailer Options
+            const mailOptions = {
+                from: `${config.transportEmail}`,
+                to: `${req.body.email}`,
+                subject: `Email Verification`,
+                text: `Hello World`,
+                html: emailTemplate(p),
+                replyTo: `${config.transportEmail}`
+              }
+            //console.log(mailOptions)
+            //Send mail
+            transporter.sendMail(mailOptions, function(err, r) {
+                if (err) {
+                  console.log('✉️  Nodemailer Error : ', err);
+                  res.json({ message: "Partner registered but password reset email NOT sent"})
+                } else {
+                  res.json({ message: "Partner registered and password reset email sent"}) 
+                  console.log('✉️  Nodemailer Response: ', r)
+                }
+              })  
+
+            
+        })
+        .catch(err => next(err));
+
+})
+
+
 //Delete user by id
 //url param "?id=______"
 router.delete('/:id', (req, res, next)=> {
