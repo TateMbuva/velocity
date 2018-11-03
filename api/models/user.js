@@ -6,6 +6,9 @@ const schema = new Schema({
     hash: { type: String, required: true },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
+    gender: { type: String, required: true },
+    mobileNumber: { type: String, required: true },
+    company: { type: String, default: "No company provided" },
     createdDate: { type: Date, default: Date.now }
 });
 

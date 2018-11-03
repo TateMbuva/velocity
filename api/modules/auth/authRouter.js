@@ -1,6 +1,12 @@
 
 const router = require('express').Router()
-const authService = require('./authService');
+const authService = require('./authService')
+const emailTemplate = require('./passwordResetTemplate')
+const config = require('../../config/config.json')
+
+//Dependancies
+const nodemailer = require('nodemailer')
+const passwordGen = require('generate-password')
 
 //Auth Router
 router.get('/',(req, res)=>{
@@ -20,9 +26,71 @@ router.post('/authenticate', (req, res, next)=> {
 //Register User
 // email + firstName + lastName + password
 router.post('/register', (req, res, next)=> {
+    let p = "no password"
+    //Generate unique password if none Exists
+    if(!req.body.password){
+        p = passwordGen.generate({
+        length: 10,
+        numbers: true
+        })
+    }else {
+        p = req.body.password
+    }
+    //New user object
+    let newUser = {
+        email: req.body.email,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        gender: req.body.gender,
+        mobileNumber: req.body.mobileNumber,
+        company: req.body.company,
+        password: p
+    }
 
-	authService.create(req.body)
-        .then(() => res.json({ message: "User registered..."}))
+    
+
+    console.log(newUser)
+    
+
+	authService.create(newUser)
+        .then(() => {
+            //process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+            // Mailer Setup
+            //Transport/Source
+            const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                  user: config.transportEmail,
+                  pass: config.emailPassword
+                },
+                tls: {
+                    // do not fail on invalid certs
+                    rejectUnauthorized: false
+                }
+              })
+            //Mailer Options
+            const mailOptions = {
+                from: `${config.transportEmail}`,
+                to: `${req.body.email}`,
+                subject: `Email Verification`,
+                text: `Hello World`,
+                html: emailTemplate(p),
+                replyTo: `${config.transportEmail}`
+              }
+            console.log(mailOptions)
+            //Send mail
+            transporter.sendMail(mailOptions, function(err, r) {
+                if (err) {
+                  console.log('✉️  Nodemailer Error : ', err);
+                  res.json({ message: "User registered but Password Reset Email NOT Sent"})
+                } else {
+                  res.json({ message: "User registered and Password Reset Email Sent"}) 
+                  console.log('✉️  Nodemailer Response: ', r)
+                }
+              })  
+
+            
+        })
         .catch(err => next(err));
 
 })
