@@ -1,0 +1,93 @@
+<!--
+  Generated template for the RegPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Reg</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+	<ion-list inset>
+
+  <ion-item>
+    <ion-label>Email</ion-label>
+    <ion-input [(ngModel)]="user.email" type="email"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Mobile Number</ion-label>
+    <ion-input [(ngModel)]="user.mobileNumber" type="number"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>First Name</ion-label>
+    <ion-input [(ngModel)]="user.firstName" type="text"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Last Name</ion-label>
+    <ion-input [(ngModel)]="user.lastName" type="text"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Password</ion-label>
+    <ion-input [(ngModel)]="user.password" type="password"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Confirm Password</ion-label>
+    <ion-input [(ngModel)]="user.passwordConfirm" type="password"></ion-input>
+  </ion-item>
+
+  
+  <ion-list radio-group [(ngModel)]="user.gender">
+  <ion-list-header>
+    Gender
+  </ion-list-header>
+
+  <ion-item>
+    <ion-label>Female</ion-label>
+    <ion-radio checked="true" value="female"></ion-radio>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Male</ion-label>
+    <ion-radio value="male"></ion-radio>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Other</ion-label>
+    <ion-radio value="other" ></ion-radio>
+  </ion-item>
+</ion-list>
+
+
+  <ion-item>
+    <ion-label>Company Name</ion-label>
+    <ion-input [(ngModel)]="user.company" type="text"></ion-input>
+  </ion-item>
+
+  
+
+</ion-list>
+
+<button ion-button block (click)="reg()">Submit</button>
+
+<ion-grid text-center>
+  <ion-row>
+    <ion-col col-12>Already have an account yet?</ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col col-12><a  (click)="login()">Back to Login</a></ion-col>
+  </ion-row>
+</ion-grid>
+
+</ion-content>

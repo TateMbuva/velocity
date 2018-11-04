@@ -1,10 +1,16 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+import { Storage } from '@ionic/storage';
+
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
+import { LoginPage } from '../pages/login/login';
+import { MemberPage } from '../pages/member/member';
+import { AdminPage } from '../pages/admin/admin';
+import { PartnerPage } from '../pages/partner/partner';
 
 @Component({
   templateUrl: 'app.html'
@@ -12,11 +18,11 @@ import { ListPage } from '../pages/list/list';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = HomePage;
+  rootPage: any = LoginPage;
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, public events: Events) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -24,6 +30,30 @@ export class MyApp {
       { title: 'Home', component: HomePage },
       { title: 'List', component: ListPage }
     ];
+
+    //member
+    this.events.subscribe('user:memberPaid', ()=>{
+      this.pages = [
+      { title: 'Home', component: MemberPage }
+    ];
+
+    });
+     //admin
+    this.events.subscribe('user:memberAdmin', ()=>{
+      this.pages = [
+      { title: 'Home', component: AdminPage }
+    ];
+
+    });
+     //patner
+    this.events.subscribe('user:memberPartner', ()=>{
+      this.pages = [
+      { title: 'Home', component: PartnerPage }
+    ];
+
+    });
+
+    this.storage.set("baseUrl", "http://localhost:3000")
 
   }
 
