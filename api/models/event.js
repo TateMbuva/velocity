@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
-    partnerId: { type: String, unique: true, required: true },
+    partnerId: { type: String, required: true },
     partnerCompany: { type: String, required: true },
-    regUsers: { type: [String], required: false },
-    eventTitle: { type: String, required: true },
+    regUsers: { type: [Object], required: false },
+    eventTitle: { type: String, required: false },
     eventInfo: { type: String, required: false },
     eventLocation: { type: String, required: false },
     eventDate: { type: Date, required: false },

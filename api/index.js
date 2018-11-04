@@ -7,6 +7,7 @@ const errorHandler = require('./config/errorHandler');
 
 // Module Routers
 const authRouter = require('./modules/auth/authRouter')
+const partnerRouter = require('./modules/partner/partnerRouter')
 
 //App Init
 const api = express()
@@ -20,6 +21,7 @@ api.use(jwt())
 
 //API module entry points
 api.use('/auth', authRouter)
+api.use('/partner', partnerRouter)
 
 // global error handler
 api.use(errorHandler);

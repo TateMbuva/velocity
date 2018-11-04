@@ -17,7 +17,8 @@ router.get('/',(req, res)=>{
 //Authenticate User/Login
 //email + password
 router.post('/authenticate', (req, res, next)=> {
-
+    console.log('wtf');
+    console.log(req.body);
 	authService.authenticate(req.body)
         .then(user => user ? res.json(user) : res.status(400).json({ message: 'Username or password is incorrect...' }))
         .catch(err => next(err));

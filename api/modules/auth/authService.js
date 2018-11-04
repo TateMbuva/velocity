@@ -37,7 +37,7 @@ async function getById(id) {
 
 async function create(userParam) {
     // validate
-    if (await User.findOne({ email: userParam.email })) {
+    if (await User.findOne({ email: userParam.firstName })) {
         throw 'Email "' + userParam.email + '" is already taken';
     }
 
@@ -65,8 +65,9 @@ async function create(userParam) {
 //Create a UserProfile for user
 //userId
 function createUserProfile(userId) {
+    
     return new Promise(async function(resolve, reject) {
-        await UserProfile.create({userId: userId}, (err, createdProfile)=>{
+        await UserProfile.create({ userId: userId }, (err, createdProfile)=>{
             if(err){
                 reject(err)
             }else{
@@ -103,7 +104,7 @@ async function update(id, userParam) {
 async function createPartner(userParam){
 
     // validate
-    if (await User.findOne({ email: userParam.email })) {
+    if (await User.findOne({ email: userParam.firstName})) {
         throw 'Email "' + userParam.email + '" is already taken';
     }
 
